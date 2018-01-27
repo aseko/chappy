@@ -1,5 +1,6 @@
 class AbstractInjection {
     constructor(item, args = []) {
+        if (!item) throw new Error(`Can't register injection ${item}`)
         this.item = item
         this.args = args
     }
@@ -34,6 +35,12 @@ class FactoryInjection extends AbstractInjection {
     }
 }
 
+class InstanceInjection extends AbstractInjection {
+    instance() {
+        return this.item
+    }
+}
+
 class Container {
     constructor() {
         this.store = new Map()
@@ -58,5 +65,6 @@ class Container {
 Container.AS_CLASS = ClassInjection
 Container.AS_SINGLETON = SingletonInjection
 Container.AS_FACTORY = FactoryInjection
+Container.AS_INSTANCE = InstanceInjection
 
 module.exports = Container

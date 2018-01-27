@@ -1,8 +1,12 @@
 const Container = require('./Container')
 
 class DependencyInjection {
-    constructor(config) {
+    constructor() {
         this.container = new Container
+    }
+
+    registerInstance(name, instance) {
+        this.container.set(Container.AS_INSTANCE, name, instance)
     }
 
     registerClass(name, constructor, ...args) {

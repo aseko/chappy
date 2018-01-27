@@ -18,6 +18,7 @@ describe('Dependency Injector', function () {
         }, 1, 2, 3)
         container.registerFactory('InjectionName6', () => {
         }, 1, 2, 3)
+        container.registerInstance('InjectionName7', {})
     })
 
     it('get injection without errors', function () {
@@ -43,6 +44,9 @@ describe('Dependency Injector', function () {
         container.get('InjectionName5')
         container.get('InjectionName6')
         container.get('InjectionName6', 4, 5, 6)
+
+        container.registerInstance('InjectionName7', {})
+        container.get('InjectionName7')
     })
 
     it('correct returning class', function () {
@@ -98,5 +102,22 @@ describe('Dependency Injector', function () {
         expect(container.get('SomeFactory')).to.be.not.equal(container.get('SomeFactory'))
         expect(container.get('SomeFactory').sayName()).to.be.equal('defaultName')
         expect(container.get('SomeFactory', 'Bob').sayName()).to.be.equal('Bob')
+    })
+
+    it('correct returning instance', function () {
+        class TestClass {
+            constructor(name) {
+                this.name = name
+            }
+
+            sayName() {
+                return this.name
+            }
+        }
+
+        const container = new Di()
+        container.registerInstance('Bob', new TestClass('Bob'))
+        expect(container.get('Bob')).to.be.instanceof(TestClass)
+        expect(container.get('Bob')).to.be.equal(container.get('Bob'))
     })
 })
