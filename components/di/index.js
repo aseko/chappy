@@ -24,6 +24,18 @@ class DependencyInjection {
     get(name, ...args) {
         return this.container.get(name, args)
     }
+
+    getAll(...names) {
+        const results = {}
+        for (const item of names) {
+            if (Array.isArray(item)) {
+                results[name] = this.get(...item)
+            } else {
+                results[name] = this.get(item)
+            }
+        }
+        return results
+    }
 }
 
 module.exports = DependencyInjection
